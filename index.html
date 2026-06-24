@@ -663,6 +663,7 @@
         <ul>
           <li>ภาพปกอัลบั้ม: Spotify (i.scdn.co)</li>
           <li>วิดีโอเพลง: <a href="https://www.youtube.com/watch?v=zyYg62Ex7IA" target="_blank" rel="noopener">YouTube — ที่ว่าง (Pause)</a></li>
+          <li>ตัวอย่างเสียงเพลง (Demo Vibe): Spotify Embed Player</li>
         </ul>
       </div>
     </div>
@@ -685,8 +686,7 @@
 
   // ---------- 2. Demo vibe: real short audio clip + animation ----------
   let vibeRunning = false;
-  const VIBE_DURATION_MS = 12000; // how long the preview plays
-  const VIBE_START_SECONDS = 40;  // where in the song to start the preview
+  const VIBE_DURATION_MS = 14000; // how long the preview plays (Spotify embed needs a moment to load)
 
   function playVibe(){
     if (vibeRunning) return;
@@ -704,14 +704,14 @@
     wave.classList.add('active');
     caption.textContent = 'กำลังเล่นตัวอย่างเพลงสั้น ๆ... ✨';
 
-    // Inject a tiny, invisible YouTube iframe that autoplays a short clip
-    // (reuses the same embedded video — no separate audio file needed)
+    // Inject a tiny, invisible Spotify embed that autoplays the track preview
+    // (Spotify's official embed widget — no ads, made for exactly this purpose)
     const audioFrame = document.createElement('iframe');
-    audioFrame.width = '0';
-    audioFrame.height = '0';
+    audioFrame.width = '1';
+    audioFrame.height = '1';
     audioFrame.style.border = 'none';
-    audioFrame.allow = 'autoplay';
-    audioFrame.src = 'https://www.youtube.com/embed/zyYg62Ex7IA?autoplay=1&start=' + VIBE_START_SECONDS + '&mute=0&controls=0';
+    audioFrame.allow = 'autoplay; encrypted-media';
+    audioFrame.src = 'https://open.spotify.com/embed/track/0fzAIXoGHEsKYSBr3gb3jS?autoplay=1&theme=0';
     mount.appendChild(audioFrame);
 
     const noteChars = ['♪','♫','♬'];
