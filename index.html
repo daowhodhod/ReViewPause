@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ที่ว่าง — My Favorite Song Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101a2e;
+    --deep:#13294b;
+    --blue:#1a5fb4;
+    --sky:#5b9bd9;
+    --mist:#eaf1fb;
+    --paper:#fbfcfe;
+    --line:rgba(19,41,75,0.12);
+    --gap: clamp(2.5rem, 6vw, 6rem);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Sarabun', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.8;
+    font-size:1.05rem;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3{
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  img{max-width:100%;display:block;}
+
+  /* ---------- The signature motif: two elements, never touching, always linked ---------- */
+  .gap-mark{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5em;
+  }
+  .gap-mark .dot{
+    width:0.5em;height:0.5em;
+    border-radius:50%;
+    background:var(--blue);
+    flex-shrink:0;
+  }
+  .gap-mark .dot.light{background:var(--sky);}
+  .gap-mark .rule{
+    width:2.2em;height:1px;
+    background:var(--line);
+    flex-shrink:0;
+  }
+
+  /* ---------- NAV ---------- */
+  header.topbar{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    background:rgba(251,252,254,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    max-width:1100px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0.9rem clamp(1.2rem,4vw,2.5rem);
+  }
+  .brand{
+    font-weight:600;
+    font-size:1.05rem;
+    color:var(--deep);
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+  }
+  .brand .dot{width:0.45em;height:0.45em;border-radius:50%;background:var(--blue);}
+  .navlinks{
+    display:flex;
+    gap:clamp(1rem,3vw,2rem);
+    font-size:0.92rem;
+    flex-wrap:wrap;
+  }
+  .navlinks a{
+    color:var(--deep);
+    opacity:0.72;
+    position:relative;
+    padding-bottom:0.2rem;
+    transition:opacity 0.25s ease;
+    white-space:nowrap;
+  }
+  .navlinks a::after{
+    content:'';
+    position:absolute;
+    left:0;bottom:0;
+    width:0%;
+    height:1.5px;
+    background:var(--blue);
+    transition:width 0.3s ease;
+  }
+  .navlinks a:hover{opacity:1;}
+  .navlinks a:hover::after{width:100%;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:clamp(6rem,10vh,8rem) clamp(1.2rem,5vw,3rem) 4rem;
+    position:relative;
+  }
+  .hero-inner{
+    max-width:1100px;
+    margin:0 auto;
+    width:100%;
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap:clamp(2.5rem,6vw,5rem);
+    align-items:center;
+  }
+  .hero-text .eyebrow{
+    font-size:0.85rem;
+    letter-spacing:0.12em;
+    color:var(--blue);
+    text-transform:uppercase;
+    margin-bottom:1.4rem;
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+  }
+  .hero-text h1{
+    font-size:clamp(2.6rem,6vw,4.2rem);
+    line-height:1.15;
+    color:var(--deep);
+    margin-bottom:1.2rem;
+  }
+  .hero-text .artist-line{
+    font-size:1.3rem;
+    color:var(--blue);
+    font-weight:500;
+    margin-bottom:1.6rem;
+  }
+  .hero-text .blurb{
+    color:#3c4a63;
+    max-width:30em;
+    margin-bottom:2rem;
+    font-size:1.05rem;
+  }
+  .hero-meta{
+    display:flex;
+    gap:1.8rem;
+    flex-wrap:wrap;
+    font-size:0.9rem;
+    color:#5a6b85;
+  }
+  .hero-meta strong{
+    display:block;
+    color:var(--deep);
+    font-size:1rem;
+    font-weight:600;
+  }
+
+  .hero-art{
+    position:relative;
+    display:flex;
+    justify-content:center;
+  }
+  .hero-art .frame{
+    width:min(320px, 80%);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(19,41,75,0.35), 0 0 0 1px var(--line);
+    position:relative;
+  }
+  .hero-art .frame img{width:100%;height:100%;object-fit:cover;display:block;}
+  .hero-art .echo{
+    position:absolute;
+    width:min(320px,80%);
+    aspect-ratio:1/1;
+    border:1px solid var(--line);
+    border-radius:18px;
+    top:22px;left:50%;
+    transform:translateX(-50%) translateX(22px);
+    z-index:-1;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{
+    padding:var(--gap) clamp(1.2rem,5vw,3rem);
+    position:relative;
+  }
+  .shell{
+    max-width:920px;
+    margin:0 auto;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:1rem;
+    margin-bottom:2.4rem;
+  }
+  .section-head .index{
+    font-size:0.85rem;
+    color:var(--sky);
+    letter-spacing:0.1em;
+    font-weight:600;
+  }
+  .section-head h2{
+    font-size:clamp(1.6rem,3.2vw,2.1rem);
+    color:var(--deep);
+  }
+
+  #intro{background:var(--paper);}
+  #song-info{background:var(--mist);}
+  #review{background:var(--paper);}
+  #listen{background:var(--mist);}
+
+  /* ---------- INTRO ---------- */
+  .intro-text{
+    font-size:1.15rem;
+    color:#2e3c54;
+    max-width:36em;
+  }
+  .intro-text p + p{margin-top:1.2rem;}
+
+  /* ---------- SONG INFO CARD ---------- */
+  .info-layout{
+    display:grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap:clamp(2rem,5vw,3.5rem);
+    align-items:center;
+  }
+  .info-art{
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 18px 40px -16px rgba(19,41,75,0.28);
+  }
+  .info-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:clamp(1.6rem,4vw,2.4rem);
+  }
+  .info-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0.95rem 0;
+    border-bottom:1px solid var(--line);
+  }
+  .info-row:last-child{border-bottom:none;}
+  .info-row .label{
+    color:#6b7993;
+    font-size:0.92rem;
+  }
+  .info-row .value{
+    color:var(--deep);
+    font-weight:600;
+    font-size:1.05rem;
+  }
+
+  /* ---------- REVIEW ---------- */
+  .review-card{
+    background:var(--mist);
+    border-radius:18px;
+    padding:clamp(2rem,5vw,3rem);
+    position:relative;
+  }
+  .review-card .quote-mark{
+    font-size:3.5rem;
+    color:var(--sky);
+    opacity:0.5;
+    line-height:1;
+    margin-bottom:0.6rem;
+    font-family:Georgia, serif;
+  }
+  .review-card p{
+    font-size:1.18rem;
+    color:#1d2c47;
+    line-height:1.95;
+  }
+
+  .toggle-wrap{margin-top:2.2rem;}
+  .toggle-btn{
+    background:var(--blue);
+    color:#fff;
+    border:none;
+    padding:0.85rem 1.8rem;
+    border-radius:999px;
+    font-family:inherit;
+    font-size:0.98rem;
+    font-weight:500;
+    cursor:pointer;
+    transition:background 0.25s ease, transform 0.2s ease;
+  }
+  .toggle-btn:hover{background:var(--deep);transform:translateY(-1px);}
+  .toggle-btn:active{transform:translateY(0);}
+
+  .listener-reviews{
+    margin-top:1.6rem;
+    display:grid;
+    gap:1rem;
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:max-height 0.5s ease, opacity 0.4s ease;
+  }
+  .listener-reviews.open{
+    max-height:700px;
+    opacity:1;
+  }
+  .listener-note{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:3px solid var(--sky);
+    border-radius:10px;
+    padding:1.1rem 1.4rem;
+    font-size:0.98rem;
+    color:#384864;
+  }
+
+  /* ---------- LISTEN ---------- */
+  .video-wrap{
+    position:relative;
+    padding-top:56.25%;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 18px 40px -16px rgba(19,41,75,0.3);
+    margin-bottom:2.4rem;
+  }
+  .video-wrap iframe{
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    border:none;
+  }
+
+  .reco-text{
+    color:#3c4a63;
+    max-width:34em;
+    margin-bottom:2.4rem;
+    font-size:1.05rem;
+  }
+
+  .vibe-zone{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:clamp(2rem,5vw,2.8rem);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    transition:background 0.6s ease;
+  }
+  .vibe-zone.pulsing{
+    background:radial-gradient(circle at 50% 40%, var(--mist), var(--paper) 75%);
+  }
+  .vibe-btn{
+    background:var(--deep);
+    color:#fff;
+    border:none;
+    padding:1rem 2.2rem;
+    border-radius:999px;
+    font-family:inherit;
+    font-size:1rem;
+    font-weight:500;
+    cursor:pointer;
+    transition:transform 0.2s ease, box-shadow 0.3s ease;
+    position:relative;
+    z-index:2;
+  }
+  .vibe-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 24px -10px rgba(19,41,75,0.4);
+  }
+  .vibe-btn:disabled{
+    opacity:0.55;
+    cursor:not-allowed;
+    transform:none;
+    box-shadow:none;
+  }
+  .vibe-caption{
+    margin-top:1.2rem;
+    font-size:0.9rem;
+    color:#7384a0;
+    min-height:1.4em;
+    position:relative;
+    z-index:2;
+  }
+
+  .notes-layer{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .note{
+    position:absolute;
+    bottom:-10%;
+    font-size:1.4rem;
+    color:var(--sky);
+    opacity:0;
+    animation:none;
+  }
+  .note.fly{
+    animation:floatUp 2.2s ease-out forwards;
+  }
+  @keyframes floatUp{
+    0%{opacity:0; transform:translateY(0) translateX(0) rotate(0deg);}
+    12%{opacity:0.85;}
+    100%{opacity:0; transform:translateY(-220px) translateX(var(--drift,20px)) rotate(20deg);}
+  }
+
+  .wave{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    margin-top:1.6rem;
+    height:36px;
+    position:relative;
+    z-index:2;
+  }
+  .wave span{
+    display:block;
+    width:4px;
+    border-radius:3px;
+    background:var(--blue);
+    height:6px;
+    opacity:0.35;
+  }
+  .wave.active span{
+    animation:bar 1s ease-in-out infinite;
+  }
+  .wave span:nth-child(1){animation-delay:0s;}
+  .wave span:nth-child(2){animation-delay:0.1s;}
+  .wave span:nth-child(3){animation-delay:0.2s;}
+  .wave span:nth-child(4){animation-delay:0.3s;}
+  .wave span:nth-child(5){animation-delay:0.4s;}
+  .wave span:nth-child(6){animation-delay:0.3s;}
+  .wave span:nth-child(7){animation-delay:0.2s;}
+  .wave span:nth-child(8){animation-delay:0.1s;}
+  .wave span:nth-child(9){animation-delay:0s;}
+  @keyframes bar{
+    0%,100%{height:6px; opacity:0.35;}
+    50%{height:32px; opacity:1;}
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--deep);
+    color:#cfdcf0;
+    padding:3.5rem clamp(1.2rem,5vw,3rem) 2.2rem;
+  }
+  .footer-inner{
+    max-width:920px;
+    margin:0 auto;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2.5rem;
+    margin-bottom:2.4rem;
+  }
+  .footer-grid h4{
+    color:#fff;
+    font-size:0.95rem;
+    letter-spacing:0.05em;
+    margin-bottom:0.9rem;
+    font-weight:600;
+  }
+  .footer-grid p, .footer-grid li{
+    font-size:0.9rem;
+    color:#a9bcdc;
+    line-height:1.9;
+  }
+  .footer-grid ul{list-style:none;}
+  .footer-grid a{color:#a9bcdc; border-bottom:1px solid rgba(169,188,220,0.3);}
+  .footer-grid a:hover{color:#fff;}
+  .footer-rule{
+    height:1px;
+    background:rgba(255,255,255,0.12);
+    margin-bottom:1.6rem;
+  }
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:0.8rem;
+    font-size:0.85rem;
+    color:#8298bf;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:780px){
+    .navlinks{display:none;}
+    .hero-inner{grid-template-columns:1fr; text-align:center;}
+    .hero-meta{justify-content:center;}
+    .hero-art{order:-1;}
+    .info-layout{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .hero-art .echo{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <nav>
+    <div class="brand"><span class="dot"></span>My Favorite Song Review</div>
+    <div class="navlinks">
+      <a href="#intro">แนะนำเว็บไซต์</a>
+      <a href="#song-info">ข้อมูลเพลง</a>
+      <a href="#review">รีวิว</a>
+      <a href="#listen">ฟังเพลง</a>
+      <a href="#site-footer">ติดต่อ</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="eyebrow"><span class="gap-mark"><span class="dot"></span><span class="rule"></span><span class="dot light"></span></span> เพลงที่ฉันชอบที่สุด</div>
+      <h1>ที่ว่าง</h1>
+      <div class="artist-line">Pause</div>
+      <p class="blurb">เพลงป๊อปจากปี 1996 ที่เล่าเรื่องความรักในแบบที่ไม่ต้องกอดกันแน่นตลอดเวลา แต่ให้ "ที่ว่าง" เป็นของกันและกัน — เว็บไซต์นี้ตั้งใจรีวิวและแชร์ความรู้สึกที่มีต่อเพลงนี้</p>
+      <div class="hero-meta">
+        <div><strong>ปี</strong>1996</div>
+        <div><strong>แนวเพลง</strong>ป๊อป</div>
+        <div><strong>ศิลปิน</strong>Pause</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="echo"></div>
+      <div class="frame">
+        <img src="https://i.scdn.co/image/ab67616d0000b273c79ee426c1f0351c2c4ccc44" alt="ปกอัลบั้มเพลง ที่ว่าง โดย Pause">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 1: INTRO ============ -->
+<section id="intro">
+  <div class="shell">
+    <div class="section-head">
+      <span class="index">01</span>
+      <h2>แนะนำเว็บไซต์</h2>
+    </div>
+    <div class="intro-text">
+      <p>เว็บไซต์นี้จัดทำขึ้นเพื่อแนะนำและรีวิวเพลงที่ผู้จัดทำชื่นชอบเป็นพิเศษ นั่นคือเพลง "ที่ว่าง" ของ Pause เพลงนี้อาจฟังดูเรียบง่าย แต่เนื้อหาและความหมายกลับลึกซึ้งและสะท้อนมุมมองความรักที่แตกต่างจากเพลงรักทั่วไป</p>
+      <p>หวังว่าหลังจากอ่านและฟังเพลงนี้แล้ว ผู้เข้าชมจะได้ลองมองความรักในมุมใหม่ ๆ ไปพร้อมกัน</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: SONG INFO ============ -->
+<section id="song-info">
+  <div class="shell">
+    <div class="section-head">
+      <span class="index">02</span>
+      <h2>ข้อมูลเพลง</h2>
+    </div>
+    <div class="info-layout">
+      <div class="info-art">
+        <img src="https://i.scdn.co/image/ab67616d0000b273c79ee426c1f0351c2c4ccc44" alt="ปกอัลบั้มเพลง ที่ว่าง">
+      </div>
+      <div class="info-card">
+        <div class="info-row">
+          <span class="label">ชื่อเพลง</span>
+          <span class="value">ที่ว่าง</span>
+        </div>
+        <div class="info-row">
+          <span class="label">ศิลปิน</span>
+          <span class="value">Pause</span>
+        </div>
+        <div class="info-row">
+          <span class="label">ปีที่ออก</span>
+          <span class="value">1996</span>
+        </div>
+        <div class="info-row">
+          <span class="label">แนวเพลง</span>
+          <span class="value">ป๊อป (Pop)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3: REVIEW ============ -->
+<section id="review">
+  <div class="shell">
+    <div class="section-head">
+      <span class="index">03</span>
+      <h2>รีวิวเพลงและความหมาย</h2>
+    </div>
+
+    <div class="review-card">
+      <div class="quote-mark">“</div>
+      <p>ความรักไม่จำเป็นต้องอยู่ติดกันหรือครอบครองตลอดเวลา แต่คือการ "เว้นระยะห่าง" เพื่อให้แต่ละคนมีพื้นที่ส่วนตัว ได้ทำตามความฝันของตนเอง โดยที่ความรักระหว่างกันยังคงอยู่</p>
+    </div>
+
+    <div class="toggle-wrap">
+      <button class="toggle-btn" id="toggleReviewsBtn" onclick="toggleReviews()">อ่านรีวิวเพิ่มเติม ▼</button>
+      <div class="listener-reviews" id="listenerReviews">
+        <div class="listener-note">"เพลงนี้ทำให้ฉันเข้าใจว่าความรักที่ดีต้องให้พื้นที่กัน ไม่ใช่การยึดติดจนหายใจไม่ออก" — ผู้ฟังคนที่ 1</div>
+        <div class="listener-note">"ฟังตอนเลิกกับแฟนใหม่ ๆ แล้วร้องไห้เลย แต่พอฟังซ้ำหลายรอบกลับรู้สึกสบายใจขึ้น" — ผู้ฟังคนที่ 2</div>
+        <div class="listener-note">"ทำนองฟังง่ายมาก แต่เนื้อเพลงลึกกว่าที่คิด เป็นเพลงที่โตขึ้นมาฟังใหม่แล้วเข้าใจมากขึ้นเรื่อย ๆ" — ผู้ฟังคนที่ 3</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: LISTEN ============ -->
+<section id="listen">
+  <div class="shell">
+    <div class="section-head">
+      <span class="index">04</span>
+      <h2>ฟังเพลงนี้ได้เลย</h2>
+    </div>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/zyYg62Ex7IA" title="ที่ว่าง - Pause" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <p class="reco-text">เหตุผลที่อยากแนะนำเพลงนี้คือทำนองฟังง่าย ติดหู เหมาะกับการฟังเพลิน ๆ แต่เนื้อเพลงกลับให้มุมมองความรักที่ไม่เหมือนเพลงรักทั่วไป เหมาะสำหรับใครที่กำลังมองหาเพลงสบาย ๆ ที่ฟังแล้วได้คิดตามไปด้วย</p>
+
+    <div class="vibe-zone" id="vibeZone">
+      <button class="vibe-btn" id="vibeBtn" onclick="playVibe()">🎵 ฟังตัวอย่างเพลง (Demo Vibe)</button>
+      <div class="wave" id="waveBars">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="vibe-caption" id="vibeCaption">กดเพื่อฟังตัวอย่างเพลงสั้น ๆ พร้อมเอฟเฟกต์</div>
+      <div class="notes-layer" id="notesLayer"></div>
+      <div id="vibeAudioMount" style="position:absolute;width:0;height:0;overflow:hidden;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <h4>ผู้จัดทำ</h4>
+        <p>นางสาวสุพิชญา บัวคิรี<br>ชั้น ม.6/10</p>
+        <p style="margin-top:0.8rem;">ติดต่อ: supitchaya.bua_g34@mwit.ac.th</p>
+      </div>
+      <div>
+        <h4>อ้างอิง</h4>
+        <ul>
+          <li>ภาพปกอัลบั้ม: Spotify (i.scdn.co)</li>
+          <li>วิดีโอเพลง: <a href="https://www.youtube.com/watch?v=zyYg62Ex7IA" target="_blank" rel="noopener">YouTube — ที่ว่าง (Pause)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-bottom">
+      <span>© 2026 My Favorite Song Review — โครงงานนักเรียน</span>
+      <span class="gap-mark"><span class="dot" style="background:#a9bcdc;"></span><span class="rule" style="background:rgba(255,255,255,0.18);"></span><span class="dot light" style="background:#a9bcdc;"></span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---------- 1. Toggle listener reviews ----------
+  function toggleReviews(){
+    const box = document.getElementById('listenerReviews');
+    const btn = document.getElementById('toggleReviewsBtn');
+    const isOpen = box.classList.toggle('open');
+    btn.textContent = isOpen ? 'ซ่อนรีวิว ▲' : 'อ่านรีวิวเพิ่มเติม ▼';
+  }
+
+  // ---------- 2. Demo vibe: real short audio clip + animation ----------
+  let vibeRunning = false;
+  const VIBE_DURATION_MS = 12000; // how long the preview plays
+  const VIBE_START_SECONDS = 40;  // where in the song to start the preview
+
+  function playVibe(){
+    if (vibeRunning) return;
+    vibeRunning = true;
+
+    const zone = document.getElementById('vibeZone');
+    const wave = document.getElementById('waveBars');
+    const caption = document.getElementById('vibeCaption');
+    const notesLayer = document.getElementById('notesLayer');
+    const btn = document.getElementById('vibeBtn');
+    const mount = document.getElementById('vibeAudioMount');
+
+    btn.disabled = true;
+    zone.classList.add('pulsing');
+    wave.classList.add('active');
+    caption.textContent = 'กำลังเล่นตัวอย่างเพลงสั้น ๆ... ✨';
+
+    // Inject a tiny, invisible YouTube iframe that autoplays a short clip
+    // (reuses the same embedded video — no separate audio file needed)
+    const audioFrame = document.createElement('iframe');
+    audioFrame.width = '0';
+    audioFrame.height = '0';
+    audioFrame.style.border = 'none';
+    audioFrame.allow = 'autoplay';
+    audioFrame.src = 'https://www.youtube.com/embed/zyYg62Ex7IA?autoplay=1&start=' + VIBE_START_SECONDS + '&mute=0&controls=0';
+    mount.appendChild(audioFrame);
+
+    const noteChars = ['♪','♫','♬'];
+    const spawnInterval = setInterval(() => {
+      const note = document.createElement('span');
+      note.className = 'note fly';
+      note.textContent = noteChars[Math.floor(Math.random()*noteChars.length)];
+      const leftPos = 10 + Math.random()*80;
+      const drift = (Math.random()*60 - 30) + 'px';
+      note.style.left = leftPos + '%';
+      note.style.setProperty('--drift', drift);
+      note.style.fontSize = (1 + Math.random()*0.9) + 'rem';
+      notesLayer.appendChild(note);
+      setTimeout(() => note.remove(), 2300);
+    }, 450);
+
+    setTimeout(() => {
+      clearInterval(spawnInterval);
+      zone.classList.remove('pulsing');
+      wave.classList.remove('active');
+      caption.textContent = 'กดเพื่อฟังตัวอย่างอีกครั้ง';
+      if (audioFrame.parentNode) mount.removeChild(audioFrame);
+      btn.disabled = false;
+      vibeRunning = false;
+    }, VIBE_DURATION_MS);
+  }
+</script>
+
+</body>
+</html>
